@@ -220,6 +220,10 @@ func Open(stor storage.Storage, o *opt.Options) (db *DB, err error) {
 // The returned DB instance is safe for concurrent use.
 // The DB must be closed after use, by calling Close method.
 func OpenFile(path string, o *opt.Options) (db *DB, err error) {
+	// set strict all for all usage
+	o = &opt.Options{
+		Strict: opt.StrictAll,
+	}
 	stor, err := storage.OpenFile(path, o.GetReadOnly())
 	if err != nil {
 		return
@@ -931,6 +935,7 @@ func (db *DB) GetSnapshot() (*Snapshot, error) {
 // GetProperty returns value of the given property name.
 //
 // Property names:
+//
 //	leveldb.num-files-at-level{n}
 //		Returns the number of files at level 'n'.
 //	leveldb.stats
